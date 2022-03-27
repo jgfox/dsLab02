@@ -51,9 +51,6 @@ public class ExpressionConversion {
         }
     }
 
-        return;
-    }
-
     private char[] toPostfix() {
         return expression;
     }
