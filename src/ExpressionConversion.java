@@ -33,10 +33,19 @@ public class ExpressionConversion {
             char tmp = prefixExpression[i];
             root = makeTree(root, tmp);
         }
+
+        return;
     }
 
-    private static BinaryTree.Node makeTree(BinaryTree.Node p, char tmp) {
+    private static BinaryTree.Node makeTree(BinaryTree.Node root, char tmp) {
+
         if (operatorCheck(tmp)) {
+            if (root == null) {
+                BinaryTree.Node n = new BinaryTree.Node(tmp);
+                return n;
+            }
+
+
 
         } else if (Character.isLetterOrDigit(tmp)) {
 
