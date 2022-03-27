@@ -8,6 +8,7 @@ public class ExpressionConversion {
     private static char[] undefined;
     private static int invalidCount;
     private static int undefinedCount;
+    private BinaryTree.Node root;
 
     ExpressionConversion(int exprLength) {
         invalidChar = new char[exprLength];
@@ -27,27 +28,34 @@ public class ExpressionConversion {
         int undefinedCount = 0;
 
         //BinaryTree.Node root = new BinaryTree.Node(null);
-        int treeDepth = 0;
-        BinaryTree.Node root = new BinaryTree.Node(null);
-        for (int i = 0; i < exprLength; i++) {
-            char tmp = prefixExpression[i];
-            root = makeTree(root, tmp);
-        }
+//        int treeDepth = 0;
+//        BinaryTree.Node root = new BinaryTree.Node(null);
+//        for (int i = 0; i < exprLength; i++) {
+//            char tmp = prefixExpression[i];
+//            root = makeTree(root, tmp);
+//        }
+        BinaryTree.Node root = null;
+        int index = 0;
+        root = makeTree(prefixExpression, exprLength, index);
 
         return;
     }
 
-    private static BinaryTree.Node makeTree(BinaryTree.Node root, char tmp) {
-
+    private static BinaryTree.Node makeTree(char[] expression, int exprLength, int index) {
+        char tmp = expression[index];
         if (operatorCheck(tmp)) {
-            if (root == null) {
-                BinaryTree.Node n = new BinaryTree.Node(tmp);
-                return n;
-            }
-
-
+//            if (root == null) {
+//                BinaryTree.Node n = new BinaryTree.Node(tmp);
+//                return n;
+//            }
+            BinaryTree.Node currentNode = new BinaryTree.Node(tmp);
+            currentNode.leftPointer = makeTree(expression, exprLength, index++);
+            currentNode.rightPointer = makeTree(expression, exprLength, index++);
+            return currentNode;
 
         } else if (Character.isLetterOrDigit(tmp)) {
+            BinaryTree.Node currentNode = new BinaryTree.Node(tmp);
+            return currentNode;
 
         } else {
             invalidChar[invalidCount] = tmp;
