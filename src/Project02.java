@@ -42,7 +42,6 @@ public class Project02 {
                 /*
                  Every new prefix expression begins with a zero counter
                  */
-                outputStream.write("Prefix: ");
             }
             if (c != '\n') {
                 if (c == ' ') {
@@ -51,7 +50,6 @@ public class Project02 {
                     prefixExpression[exprLength] = (char) c;
                     ++exprLength;
                     whiteSpaceCount = 0; // whitespace counter resets when a character is found
-                    outputStream.write(c);
                 }
             }
             /*
@@ -96,6 +94,9 @@ public class Project02 {
                     /*
                     Writing everything to file.
                      */
+
+                    outputStream.write("Prefix: ");
+                    outputStream.write(prefixExpression);
                     outputStream.write('\n');
                     outputStream.write("Infix: ");
                     if (infixExpression != null) {
