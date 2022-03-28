@@ -4,6 +4,8 @@ public class ExpressionConversion {
     invalidChar : array for the invalid characters
     undefined : array for all the undefined operands due to expression balance
      */
+    private static char[] infixExpression;
+    private static char[] postfixExpression;
     private static char[] invalidChar;
     private static char[] undefined;
     private static int invalidCount;
@@ -11,6 +13,8 @@ public class ExpressionConversion {
     private BinaryTree.Node root;
 
     ExpressionConversion(int exprLength) {
+        infixExpression = new char[exprLength];
+        postfixExpression = new char[exprLength];
         invalidChar = new char[exprLength];
         undefined = new char[exprLength];
         BinaryTree BT = new BinaryTree;
@@ -22,7 +26,7 @@ public class ExpressionConversion {
         return undefined;
     }
 
-    public static char[] expressionConverter(char[] prefixExpression, int exprLength) {
+    public static void expressionConverter(char[] prefixExpression, int exprLength) {
 
         int invalidCount = 0;
         int undefinedCount = 0;
@@ -37,6 +41,8 @@ public class ExpressionConversion {
         BinaryTree.Node root = null;
         int index = 0;
         root = makeTree(prefixExpression, exprLength, index);
+        infixExpression = toInfix(root, exprLength);
+        postfixExpression = toPostfix(root, exprLength);
 
         return;
     }
@@ -57,6 +63,9 @@ public class ExpressionConversion {
             BinaryTree.Node currentNode = new BinaryTree.Node(tmp);
             return currentNode;
 
+        } else if (index == exprLength) {
+            return null;
+
         } else {
             invalidChar[invalidCount] = tmp;
             invalidCount++;
@@ -68,11 +77,17 @@ public class ExpressionConversion {
         }
     }
 
-    private char[] toPostfix() {
-        return expression;
+    private static char[] toPostfix(BinaryTree.Node node, int exprLength) {
+        if (node == null) {
+            return expression;
+        }
+        else {
+            toPostfix(node.leftPointer, exprLength);
+            toPostfix(node.rightPointer, exprLength);
+        }
     }
 
-    private char[] toInfix() {
+    private static char[] toInfix(BinaryTree.Node node, int exprLength) {
         return expression;
     }
 
