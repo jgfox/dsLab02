@@ -48,7 +48,7 @@ public class Project02 {
                 if (c == ' ') {
                     whiteSpaceCount++;  // track continuous whitespace
                 } else {
-                    prefixStack.push((char) c);
+                    prefixExpression[exprLength] = (char) c;
                     ++exprLength;
                     whiteSpaceCount = 0; // whitespace counter resets when a character is found
                     outputStream.write(c);
@@ -71,8 +71,9 @@ public class Project02 {
             if (c == '\n' || whiteSpaceCount > whiteSpaceAccept) {
                 if (exprLength != 0) {
                     ExpressionConversion ec = new ExpressionConversion(exprLength);
-                    char[] outputArray = new char[exprLength];
-                    outputArray = ExpressionConversion.expressionConverter(prefixExpression, exprLength);
+                    ExpressionConversion.expressionConverter(prefixExpression, exprLength);
+                    char[] infixExpression = ExpressionConversion.getInfix();
+                    char[] postfixExpression = ExpressionConversion.getPostfix();
                     char[] invalidChar = ExpressionConversion.getInvalid();
                     char[] undefined = ExpressionConversion.getUndefined();
                     char[] lostTerms = new char[0];
@@ -80,58 +81,64 @@ public class Project02 {
                     The following will make sure the output stack doesn't have any unexpressed terms
                     left in case the fed prefix expression was unbalanced.
                      */
-                    if (!outputArray.isEmpty()) {
-                        int currentIndex = 0;
-                        lostTerms = new char[exprLength - output.length];
-                        while (!outputStack.isEmpty()) {
-                            char[] term = outputStack.pop();
-                            for (int i = 0; i < term.length; i++) {
-                                lostTerms[currentIndex] = term[i];
-                                currentIndex++;
-                            }
-                        }
-                    }
+//                    if (!outputArray.isEmpty()) {
+//                        int currentIndex = 0;
+//                        lostTerms = new char[exprLength - output.length];
+//                        while (!outputStack.isEmpty()) {
+//                            char[] term = outputStack.pop();
+//                            for (int i = 0; i < term.length; i++) {
+//                                lostTerms[currentIndex] = term[i];
+//                                currentIndex++;
+//                            }
+//                        }
+//                    }
 
                     /*
                     Writing everything to file.
                      */
                     outputStream.write('\n');
-                    outputStream.write("Postfix: ");
-                    if (output != null) {
-                        outputStream.write(output);
+                    outputStream.write("Infix: ");
+                    if (infixExpression != null) {
+                        outputStream.write(infixExpression);
                         outputStream.write('\n');
-                    } else {
-                        outputStream.write("Invalid Expression");
+                        outputStream.write('\n');
+                        outputStream.write("Postfix: ");
+                        if (postfixExpression != null) {
+                            outputStream.write(postfixExpression);
+                            outputStream.write('\n');
+                        } else {
+                            outputStream.write("Invalid Expression");
+                            outputStream.write('\n');
+                        }
+                        if (lostTerms != null) {
+                            outputStream.write("Lost Terms: ");
+                            outputStream.write(lostTerms);
+                            outputStream.write('\n');
+                        }
+                        if (invalidChar != null) {
+                            outputStream.write("Invalid Characters: ");
+                            outputStream.write(invalidChar);
+                            outputStream.write('\n');
+                        }
+                        if (undefined != null) {
+                            outputStream.write("Undefined Operators: ");
+                            outputStream.write(undefined);
+                            outputStream.write('\n');
+                        }
+                        exprLength = 0;
+                        whiteSpaceCount = 0;
                         outputStream.write('\n');
                     }
-                    if (lostTerms != null) {
-                        outputStream.write("Lost Terms: ");
-                        outputStream.write(lostTerms);
-                        outputStream.write('\n');
-                    }
-                    if (invalidChar != null) {
-                        outputStream.write("Invalid Characters: ");
-                        outputStream.write(invalidChar);
-                        outputStream.write('\n');
-                    }
-                    if (undefined != null) {
-                        outputStream.write("Undefined Operators: ");
-                        outputStream.write(undefined);
-                        outputStream.write('\n');
-                    }
-                    exprLength = 0;
-                    whiteSpaceCount = 0;
-                    outputStream.write('\n');
                 }
             }
-        }
 
-        try {
-            if (inputStream != null) inputStream.close();
-            if (outputStream != null) outputStream.close();
-        } catch (Exception x) {
-            System.err.println(x);
+            try {
+                if (inputStream != null) inputStream.close();
+                if (outputStream != null) outputStream.close();
+            } catch (Exception x) {
+                System.err.println(x);
+            }
+            return;
         }
-        return;
     }
 }

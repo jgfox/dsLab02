@@ -10,6 +10,7 @@ public class ExpressionConversion {
     private static char[] undefined;
     private static int invalidCount;
     private static int undefinedCount;
+    private static int exprIndex;
     private BinaryTree.Node root;
 
     ExpressionConversion(int exprLength) {
@@ -17,7 +18,13 @@ public class ExpressionConversion {
         postfixExpression = new char[exprLength];
         invalidChar = new char[exprLength];
         undefined = new char[exprLength];
-        BinaryTree BT = new BinaryTree;
+        BinaryTree BT = new BinaryTree();
+    }
+    public static char[] getInfix() {
+        return infixExpression;
+    }
+    public static char[] getPostfix() {
+        return postfixExpression;
     }
     public static char[] getInvalid() {
         return invalidChar;
@@ -31,29 +38,19 @@ public class ExpressionConversion {
         int invalidCount = 0;
         int undefinedCount = 0;
 
-        //BinaryTree.Node root = new BinaryTree.Node(null);
-//        int treeDepth = 0;
-//        BinaryTree.Node root = new BinaryTree.Node(null);
-//        for (int i = 0; i < exprLength; i++) {
-//            char tmp = prefixExpression[i];
-//            root = makeTree(root, tmp);
-//        }
         BinaryTree.Node root = null;
         int index = 0;
         root = makeTree(prefixExpression, exprLength, index);
-        infixExpression = toInfix(root, exprLength);
-        postfixExpression = toPostfix(root, exprLength);
-
+        exprIndex = 0;
+        toInfix(root, exprLength);
+        exprIndex = 0;
+        toPostfix(root, exprLength);
         return;
     }
 
     private static BinaryTree.Node makeTree(char[] expression, int exprLength, int index) {
         char tmp = expression[index];
         if (operatorCheck(tmp)) {
-//            if (root == null) {
-//                BinaryTree.Node n = new BinaryTree.Node(tmp);
-//                return n;
-//            }
             BinaryTree.Node currentNode = new BinaryTree.Node(tmp);
             currentNode.leftPointer = makeTree(expression, exprLength, index++);
             currentNode.rightPointer = makeTree(expression, exprLength, index++);
@@ -75,20 +72,31 @@ public class ExpressionConversion {
                 e.printStackTrace();
             }
         }
+        return null;
     }
 
-    private static char[] toPostfix(BinaryTree.Node node, int exprLength) {
+    private static void toPostfix(BinaryTree.Node node, int exprLength) {
         if (node == null) {
-            return expression;
+            return;
         }
         else {
             toPostfix(node.leftPointer, exprLength);
             toPostfix(node.rightPointer, exprLength);
+            postfixExpression[exprIndex] = (char) node.data;
+            exprIndex++;
         }
     }
 
-    private static char[] toInfix(BinaryTree.Node node, int exprLength) {
-        return expression;
+    private static void toInfix(BinaryTree.Node node, int exprLength) {
+        if (node == null) {
+            return;
+        }
+        else {
+            toPostfix(node.leftPointer, exprLength);
+            infixExpression[exprIndex] = (char) node.data;
+            toPostfix(node.rightPointer, exprLength);
+            exprIndex++;
+        }
     }
 
     /*
