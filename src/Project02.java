@@ -101,44 +101,47 @@ public class Project02 {
                     if (infixExpression != null) {
                         outputStream.write(infixExpression);
                         outputStream.write('\n');
-                        outputStream.write('\n');
-                        outputStream.write("Postfix: ");
-                        if (postfixExpression != null) {
-                            outputStream.write(postfixExpression);
-                            outputStream.write('\n');
-                        } else {
-                            outputStream.write("Invalid Expression");
-                            outputStream.write('\n');
-                        }
-                        if (lostTerms != null) {
-                            outputStream.write("Lost Terms: ");
-                            outputStream.write(lostTerms);
-                            outputStream.write('\n');
-                        }
-                        if (invalidChar != null) {
-                            outputStream.write("Invalid Characters: ");
-                            outputStream.write(invalidChar);
-                            outputStream.write('\n');
-                        }
-                        if (undefined != null) {
-                            outputStream.write("Undefined Operators: ");
-                            outputStream.write(undefined);
-                            outputStream.write('\n');
-                        }
-                        exprLength = 0;
-                        whiteSpaceCount = 0;
+                    } else {
+                        outputStream.write("Invalid Expression");
                         outputStream.write('\n');
                     }
+                    outputStream.write('\n');
+                    outputStream.write("Postfix: ");
+                    if (postfixExpression != null) {
+                        outputStream.write(postfixExpression);
+                        outputStream.write('\n');
+                    } else {
+                        outputStream.write("Invalid Expression");
+                        outputStream.write('\n');
+                    }
+                    if (lostTerms != null) {
+                        outputStream.write("Lost Terms: ");
+                        outputStream.write(lostTerms);
+                        outputStream.write('\n');
+                    }
+                    if (invalidChar != null) {
+                        outputStream.write("Invalid Characters: ");
+                        outputStream.write(invalidChar);
+                        outputStream.write('\n');
+                    }
+                    if (undefined != null) {
+                        outputStream.write("Undefined Operators: ");
+                        outputStream.write(undefined);
+                        outputStream.write('\n');
+                    }
+                    exprLength = 0;
+                    whiteSpaceCount = 0;
+                    outputStream.write('\n');
                 }
             }
-
-            try {
-                if (inputStream != null) inputStream.close();
-                if (outputStream != null) outputStream.close();
-            } catch (Exception x) {
-                System.err.println(x);
-            }
-            return;
         }
+
+        try {
+            if (inputStream != null) inputStream.close();
+            if (outputStream != null) outputStream.close();
+        } catch (Exception x) {
+            System.err.println(x);
+        }
+        return;
     }
 }

@@ -3,7 +3,6 @@
  * 64CB42
  * jfox49@jhu.edu
  */
-:w
 
 public class ExpressionConversion {
 
@@ -46,8 +45,8 @@ public class ExpressionConversion {
         int undefinedCount = 0;
 
         BinaryTree.Node root = null;
-        int index = 0;
-        root = makeTree(prefixExpression, exprLength, index);
+        exprIndex = 0;
+        root = makeTree(prefixExpression, exprLength);
         exprIndex = 0;
         toInfix(root, exprLength);
         exprIndex = 0;
@@ -55,28 +54,28 @@ public class ExpressionConversion {
         return;
     }
 
-    private static BinaryTree.Node makeTree(char[] expression, int exprLength, int index) {
-        char tmp = expression[index];
-        if (operatorCheck(tmp)) {
-            BinaryTree.Node currentNode = new BinaryTree.Node(tmp);
-            currentNode.leftPointer = makeTree(expression, exprLength, index++);
-            currentNode.rightPointer = makeTree(expression, exprLength, index++);
-            return currentNode;
+    private static BinaryTree.Node makeTree(char[] expression, int exprLength) {
+        if (exprIndex < exprLength) {
+            char tmp = expression[exprIndex];
+            exprIndex++;
+            if (operatorCheck(tmp)) {
+                BinaryTree.Node currentNode = new BinaryTree.Node(tmp);
+                currentNode.leftPointer = makeTree(expression, exprLength);
+                currentNode.rightPointer = makeTree(expression, exprLength);
+                return currentNode;
 
-        } else if (Character.isLetterOrDigit(tmp)) {
-            BinaryTree.Node currentNode = new BinaryTree.Node(tmp);
-            return currentNode;
+            } else if (Character.isLetterOrDigit(tmp)) {
+                BinaryTree.Node currentNode = new BinaryTree.Node(tmp);
+                return currentNode;
 
-        } else if (index == exprLength) {
-            return null;
-
-        } else {
-            invalidChar[invalidCount] = tmp;
-            invalidCount++;
-            try {
-                throw new Exception("Unbalanced prefix expression");
-            } catch (Exception e) {
-                e.printStackTrace();
+            } else {
+                invalidChar[invalidCount] = tmp;
+                invalidCount++;
+                try {
+                    throw new Exception("Unbalanced prefix expression");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
         return null;
