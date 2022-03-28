@@ -1,3 +1,9 @@
+/*
+ * Jonathan Fox
+ * 64CB42
+ * jfox49@jhu.edu
+ */
+
 public class BinaryTree <E> {
 
     public static class Node <E> {
