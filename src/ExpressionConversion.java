@@ -100,8 +100,8 @@ public class ExpressionConversion {
         else {
             toInfix(node.leftPointer, exprLength);
             infixExpression[exprIndex] = (char) node.data;
-            toInfix(node.rightPointer, exprLength);
             exprIndex++;
+            toInfix(node.rightPointer, exprLength);
         }
     }
 
