@@ -105,7 +105,6 @@ public class Project02 {
                         outputStream.write("Invalid Expression");
                         outputStream.write('\n');
                     }
-                    outputStream.write('\n');
                     outputStream.write("Postfix: ");
                     if (postfixExpression != null) {
                         outputStream.write(postfixExpression);

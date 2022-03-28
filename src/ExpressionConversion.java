@@ -98,9 +98,9 @@ public class ExpressionConversion {
             return;
         }
         else {
-            toPostfix(node.leftPointer, exprLength);
+            toInfix(node.leftPointer, exprLength);
             infixExpression[exprIndex] = (char) node.data;
-            toPostfix(node.rightPointer, exprLength);
+            toInfix(node.rightPointer, exprLength);
             exprIndex++;
         }
     }
