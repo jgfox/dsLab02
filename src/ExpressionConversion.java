@@ -55,7 +55,7 @@ public class ExpressionConversion {
     }
 
     private static BinaryTree.Node makeTree(char[] expression, int exprLength) {
-        if (exprIndex < exprLength) {
+        while (exprIndex < exprLength) {
             char tmp = expression[exprIndex];
             exprIndex++;
             if (operatorCheck(tmp)) {
@@ -67,6 +67,15 @@ public class ExpressionConversion {
             } else if (Character.isLetterOrDigit(tmp)) {
                 BinaryTree.Node currentNode = new BinaryTree.Node(tmp);
                 return currentNode;
+
+            } else if (notSupportedOperators(tmp)) {
+                undefined[undefinedCount] = tmp;
+                undefinedCount++;
+                try {
+                    throw new Exception("Unbalanced expression, unsupported operator detected");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
             } else {
                 invalidChar[invalidCount] = tmp;
@@ -80,6 +89,7 @@ public class ExpressionConversion {
         }
         return null;
     }
+
 
     private static void toPostfix(BinaryTree.Node node, int exprLength) {
         if (node == null) {
@@ -116,6 +126,18 @@ public class ExpressionConversion {
             case '*':
             case '/':
             case '$':
+            //case '^':
+                return true;
+        }
+        return false;
+    }
+    private static boolean notSupportedOperators(char operator) {
+        switch(operator) {
+            case '!': // too hard to implement the logic behind this one
+            case '%': // modulus would be nice to have
+            case '^': // using old fashioned sigils for exponentiation
+            case '<': // bitwise shifts could be supported with the right code
+            case '>': // same as above
                 return true;
         }
         return false;

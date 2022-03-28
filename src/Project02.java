@@ -31,7 +31,7 @@ public class Project02 {
         int whiteSpaceCount = 0;  // counter for continuous white space
         int exprLength = 0;  // counter to track expression length
         /*
-         Stack has an arbitrary max of thousand characters on input.
+         char array has an arbitrary max of thousand characters on input.
          For this to be full, that would mean a thousand characters in
          the prefix expression not including line breaks.
          */
@@ -129,8 +129,14 @@ public class Project02 {
                         outputStream.write(undefined);
                         outputStream.write('\n');
                     }
+                    /*
+                    Clearing out variables and arrays used.
+                    prefixExpression is declared outside the while loop but retains values
+                    Re-declaring it clears all values in case the next term is shorter.
+                     */
                     exprLength = 0;
                     whiteSpaceCount = 0;
+                    prefixExpression = new char[1000];
                     outputStream.write('\n');
                 }
             }
