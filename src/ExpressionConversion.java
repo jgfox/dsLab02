@@ -7,8 +7,14 @@
 public class ExpressionConversion {
 
     /*
+    infixExpression : array for infix expression
+    postfixExpression : array for postfix expression
     invalidChar : array for the invalid characters
     undefined : array for all the undefined operands due to expression balance
+    lostTerms : array for terms that can't be evaluated due to expression balance
+    invalidCount : count for invalids for indexing invalid array
+    undefinedCount : count for undefined for indexing undefined operators
+    exprIndex : count for indexing infix and postfix, eventually used for lostTerms
      */
     private static char[] infixExpression;
     private static char[] postfixExpression;
@@ -19,13 +25,17 @@ public class ExpressionConversion {
     private static int undefinedCount;
     private static int exprIndex;
 
+    // initializing method
     ExpressionConversion(int exprLength) {
         infixExpression = new char[exprLength];
         postfixExpression = new char[exprLength];
         invalidChar = new char[exprLength];
         undefined = new char[exprLength];
         lostTerms = new char[exprLength];
+        invalidCount = 0;
+        undefinedCount = 0;
     }
+    // return methods to avoid abuse of global variables
     public static char[] getInfix() {
         return infixExpression;
     }
@@ -44,10 +54,7 @@ public class ExpressionConversion {
 
     public static void expressionConverter(char[] prefixExpression, int exprLength) {
 
-        int invalidCount = 0;
-        int undefinedCount = 0;
-
-        BinaryTree.Node root = null;
+        BinaryTree.Node root;
         exprIndex = 0;
         root = makeTree(prefixExpression, exprLength);
         exprIndex = 0;
@@ -57,20 +64,42 @@ public class ExpressionConversion {
 
         /*
         The following does a check to see if the entire prefix term was processed
-        by checking the class exprIndex variable is at the same value of as the
-        prefix expression length (+1 due to Java indexing)
-        If the criteria is met then
+        by checking the class exprIndex variable is less than that of the prefix
+        expression length (+1 due to Java indexing)
+        If the criteria is met then each remaining character of the prefix expression
+        is checked for categorization into respective arrays
+        Specific error handling isn't included as the accessed portion will not be a
+        part of the expression
          */
-        if (exprIndex + 1 >= exprLength) {
+        if (exprIndex + 1 < exprLength) {
             int loopIndex = 0;
             while (exprIndex < exprLength) {
-                lostTerms[loopIndex] = prefixExpression[++exprIndex];
-                loopIndex++;
+                char tmp = prefixExpression[exprIndex++];
+                if (notSupportedOperators(tmp)) {
+                    undefined[undefinedCount] = tmp;
+                    undefinedCount++;
+                } else if (operatorCheck(tmp) || Character.isLetterOrDigit(tmp)) {
+                    lostTerms[loopIndex] = tmp;
+                    loopIndex++;
+                } else {
+                    invalidChar[invalidCount] = tmp;
+                    invalidCount++;
+                }
+            }
+            try {
+                throw new Exception("Unbalanced prefix expression, unevaluated terms detected");
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         return;
     }
 
+    /*
+    makeTree is a recursive method that generates the binary tree as long as there is a balanced
+    path for it.  If an expression is unbalanced then the tree won't capture all terms of the
+    expression.
+     */
     private static BinaryTree.Node makeTree(char[] expression, int exprLength) {
         while (exprIndex < exprLength) {
             char tmp = expression[exprIndex];
@@ -148,9 +177,12 @@ public class ExpressionConversion {
         }
         return false;
     }
+    /*
+    this method has operators or portions of operators that are not supported
+     */
     private static boolean notSupportedOperators(char operator) {
         switch(operator) {
-            case '!': // too hard to implement the logic behind this one
+            case '!': // factorial
             case '%': // modulus would be nice to have
             case '^': // using old fashioned sigil for exponentiation instead
             case '<': // bitwise shifts could be supported with the right code
