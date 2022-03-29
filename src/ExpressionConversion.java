@@ -14,17 +14,17 @@ public class ExpressionConversion {
     private static char[] postfixExpression;
     private static char[] invalidChar;
     private static char[] undefined;
+    private static char[] lostTerms;
     private static int invalidCount;
     private static int undefinedCount;
     private static int exprIndex;
-    private BinaryTree.Node root;
 
     ExpressionConversion(int exprLength) {
         infixExpression = new char[exprLength];
         postfixExpression = new char[exprLength];
         invalidChar = new char[exprLength];
         undefined = new char[exprLength];
-        BinaryTree BT = new BinaryTree();
+        lostTerms = new char[exprLength];
     }
     public static char[] getInfix() {
         return infixExpression;
@@ -37,6 +37,9 @@ public class ExpressionConversion {
     }
     public static char[] getUndefined() {
         return undefined;
+    }
+    public static char[] getLostTerms() {
+        return lostTerms;
     }
 
     public static void expressionConverter(char[] prefixExpression, int exprLength) {
@@ -51,6 +54,20 @@ public class ExpressionConversion {
         toInfix(root, exprLength);
         exprIndex = 0;
         toPostfix(root, exprLength);
+
+        /*
+        The following does a check to see if the entire prefix term was processed
+        by checking the class exprIndex variable is at the same value of as the
+        prefix expression length (+1 due to Java indexing)
+        If the criteria is met then
+         */
+        if (exprIndex + 1 >= exprLength) {
+            int loopIndex = 0;
+            while (exprIndex < exprLength) {
+                lostTerms[loopIndex] = prefixExpression[++exprIndex];
+                loopIndex++;
+            }
+        }
         return;
     }
 
@@ -135,7 +152,7 @@ public class ExpressionConversion {
         switch(operator) {
             case '!': // too hard to implement the logic behind this one
             case '%': // modulus would be nice to have
-            case '^': // using old fashioned sigils for exponentiation
+            case '^': // using old fashioned sigil for exponentiation instead
             case '<': // bitwise shifts could be supported with the right code
             case '>': // same as above
                 return true;

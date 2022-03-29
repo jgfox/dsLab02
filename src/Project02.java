@@ -74,7 +74,7 @@ public class Project02 {
                     char[] postfixExpression = ExpressionConversion.getPostfix();
                     char[] invalidChar = ExpressionConversion.getInvalid();
                     char[] undefined = ExpressionConversion.getUndefined();
-                    char[] lostTerms = new char[0];
+                    char[] lostTerms = ExpressionConversion.getLostTerms();
                     /*
                     The following will make sure the output stack doesn't have any unexpressed terms
                     left in case the fed prefix expression was unbalanced.
