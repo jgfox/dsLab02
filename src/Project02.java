@@ -66,15 +66,31 @@ public class Project02 {
             lostTerms :   used to get the leftover terms that couldn't be balanced correctly
                           due to an unbalanced expression.
              */
-            if (c == '\n' || whiteSpaceCount > whiteSpaceAccept) {
+            else if (whiteSpaceCount > whiteSpaceAccept) {
                 if (exprLength != 0) {
                     ExpressionConversion ec = new ExpressionConversion(exprLength);
-                    ExpressionConversion.expressionConverter(prefixExpression, exprLength);
-                    char[] infixExpression = ExpressionConversion.getInfix();
-                    char[] postfixExpression = ExpressionConversion.getPostfix();
-                    char[] invalidChar = ExpressionConversion.getInvalid();
-                    char[] undefined = ExpressionConversion.getUndefined();
-                    char[] lostTerms = ExpressionConversion.getLostTerms();
+                    /**
+                     * What you've done here:
+                     * ExpressionConversion.expressionConverter(prefixExpression, exprLength);
+                     * is execute a function on a one-time instance of ExpressionConverter, rather
+                     * than on the local class instance "ec" you created above. You want to use that
+                     * local instance instead, and that way you don't have to use static vars. Then you
+                     * have access to all its internal variables through getters/setters.
+                     */
+
+                    /**
+                     * You could also just avoid using these local variables too since they're already
+                     * stored in your local ExpressionConversion instance. If you kept them, you'd be
+                     * storing duplicate data and wasting memory.
+                     */
+                    /*
+                    char[] infixExpression = ec.getInfix();
+                    char[] postfixExpression = ec.getPostfix();
+                    char[] invalidChar = ec.getInvalid();
+                    char[] undefined = ec.getUndefined();
+                    char[] lostTerms = ec.getLostTerms();
+                    */
+
                     /*
                     The following will make sure the output stack doesn't have any unexpressed terms
                     left in case the fed prefix expression was unbalanced.
@@ -99,34 +115,34 @@ public class Project02 {
                     outputStream.write(prefixExpression);
                     outputStream.write('\n');
                     outputStream.write("Infix: ");
-                    if (infixExpression != null) {
-                        outputStream.write(infixExpression);
+                    if (ec.getInfix() != null) {
+                        outputStream.write(ec.getInfix());
                         outputStream.write('\n');
                     } else {
                         outputStream.write("Invalid Expression");
                         outputStream.write('\n');
                     }
                     outputStream.write("Postfix: ");
-                    if (postfixExpression != null) {
-                        outputStream.write(postfixExpression);
+                    if (ec.getPostfix() != null) {
+                        outputStream.write(ec.getPostfix());
                         outputStream.write('\n');
                     } else {
                         outputStream.write("Invalid Expression");
                         outputStream.write('\n');
                     }
-                    if (lostTerms != null) {
+                    if ( ec.getLostTerms() != null) {
                         outputStream.write("Lost Terms: ");
-                        outputStream.write(lostTerms);
+                        outputStream.write( ec.getLostTerms());
                         outputStream.write('\n');
                     }
-                    if (invalidChar != null) {
+                    if (ec.getInvalid() != null) {
                         outputStream.write("Invalid Characters: ");
-                        outputStream.write(invalidChar);
+                        outputStream.write(ec.getInvalid());
                         outputStream.write('\n');
                     }
-                    if (undefined != null) {
+                    if (ec.getUndefined() != null) {
                         outputStream.write("Undefined Operators: ");
-                        outputStream.write(undefined);
+                        outputStream.write(ec.getUndefined());
                         outputStream.write('\n');
                     }
                     /*
