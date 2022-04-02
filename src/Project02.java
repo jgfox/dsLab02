@@ -38,13 +38,14 @@ public class Project02 {
         char[] prefixExpression = new char[1000];
 
         while ((c = inputStream.read()) != -1) { // read and process one character
+            char scannedChar = (char) c;
             if (exprLength == 0) {
                 /*
                  Every new prefix expression begins with a zero counter
                  */
             }
-            if (c != '\n') {
-                if (c == ' ') {
+            if (scannedChar != '\n') {
+                if (scannedChar == ' ') {
                     whiteSpaceCount++;  // track continuous whitespace
                 } else {
                     prefixExpression[exprLength] = (char) c;
